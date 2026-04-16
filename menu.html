@@ -1,0 +1,570 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Меню клуба — Full HD</title>
+
+<style>
+/* ===== КРАСИВАЯ СТРОКА НОВОСТЕЙ ===== */
+.news-line {
+    width: 92%;
+    margin: 15px auto;
+    padding: 14px 20px;
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
+    border: 2px solid #00ffaa;
+    box-shadow: 0 0 20px rgba(0,255,170,0.6);
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ===== СТРОКА НОВОСТЕЙ С ФОТО ===== */
+.news-photo {
+    width: 100px;          /* маленький размер */
+    height: 100px;
+    border-radius: 20px;   /* не круг, а аккуратный скруглённый квадрат */
+    object-fit: cover;
+    border: 1.5px solid #00ffaa;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+}
+
+/* Небольшое увеличение */
+.news-photo:hover {
+    transform: scale(1.4);
+    box-shadow: 0 0 15px rgba(0,255,170,0.9);
+}
+
+@keyframes shine {
+    100% { left: 100%; }
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    color: white;
+    height: 100%;
+    width: 100%;
+    user-select: none;
+    background: url("img/background.jpg") no-repeat center center;
+    background-size: cover;
+    overflow: auto;
+}
+
+.overlay {
+    background: rgba(0,0,0,0.7);
+    min-height: 100vh;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.close-btn {
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    background: #ff4444;
+    border: none;
+    color: white;
+    font-size: 20px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+h1 { text-align: center; font-size: 48px; margin-bottom: 40px; }
+
+.category { 
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+.category h2 {
+    font-size: 36px;
+    border-left: 6px solid #00ff99;
+    padding-left: 15px;
+    margin-bottom: 10px;
+}
+
+.menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 25px;
+}
+
+.item {
+    background: rgba(25,25,25,0.9);
+    border-radius: 15px;
+    padding: 10px;
+    text-align: center;
+    max-width: 220px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.item:hover { transform: scale(1.03); box-shadow: 0 8px 20px rgba(0,255,153,0.4); }
+
+.item img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.item h3 { margin: 10px 0 5px; }
+.price { font-size: 22px; color: #00ff99; margin-bottom: 8px; }
+
+.qty-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 5px;
+}
+.qty-controls button {
+    background: #00ff99;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: transform 0.2s;
+}
+.qty-controls button:hover { transform: scale(1.1); }
+.qty-controls span { font-size: 18px; width: 24px; display: inline-block; text-align: center; }
+
+/* Кнопка "Отправить заказ" */
+.send-tab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg,#00ff99,#00cc66);
+    color: #000;
+    border: none;
+    padding: 15px 25px;
+    font-size: 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.6);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.send-tab:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(0,0,0,0.8); }
+
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.85);
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-content {
+    background: #111;
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    position: relative;
+    transform: translateY(-50px);
+    animation: slideDown 0.3s forwards;
+    box-shadow: 0 10px 30px rgba(0,255,153,0.5);
+}
+
+@keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.modal h2 { color: #00ff99; margin-bottom: 20px; font-size: 28px; }
+#orderListContainer {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+#orderListContainer div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+    background: rgba(0,255,153,0.05);
+    border-radius: 8px;
+    margin-bottom: 5px;
+    transition: background 0.2s;
+}
+#orderListContainer div:hover { background: rgba(0,255,153,0.1); }
+
+.modal button {
+    background: #00ff99;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.modal button:hover { transform: scale(1.05); box-shadow: 0 6px 15px rgba(0,0,0,0.6); }
+
+.modal .close-modal {
+    background: #ff4444;
+    color: #fff;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 20px;
+    border-radius: 12px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+/* Блокировка отсутствующих товаров */
+.item.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    filter: grayscale(100%);
+}
+
+.item.disabled .price {
+    color: #ff4444;
+}
+</style>
+</head>
+
+<body oncontextmenu="return false;" onkeydown="return disableKeys(event);">
+
+<button class="close-btn" onclick="window.close();">✖ Yopish</button>
+
+<div class="overlay">
+
+<h1>Klub menyusi</h1>
+
+<!-- ===== TARIFLAR (без кнопок) ===== -->
+<div class="category">
+<h2>🎮 Klub narxlari</h2>
+<div class="menu">
+<div class="item"><h3>O'YIN tarifi -- 6:00 dan 18:00 gacha. BIR SOAT NARXI</h3><div class="price">5000 сум</div></div>
+<div class="item"><h3>O'YIN tarifi -- 18:00 dan 06:00 gacha. BIR SOAT NARXI</h3><div class="price">7000 сум</div></div>
+<div class="item"><h3>INTERNET tarifi BIR SOAT</h3><div class="price">8000 сум</div></div>
+<div class="item"><h3>Yakshanba kunlari narxi kun bo'yi</h3><div class="price">5000 сум</div></div>
+<div class="item"><h3>NOCHNOY PAKET 00:00 dan boshlidi  8:00 gacha</h3><div class="price">25000 сум</div></div>
+</div>
+</div>
+
+<!-- ===== ICHIMLIKLAR ===== -->
+<div class="category">
+<h2>🥤ICHIMLIKLAR</h2>
+<div class="menu">
+<div class="item" data-price="13000" data-name="Flesh">
+    <img src="img/drink1.jpg">
+    <h3>Flesh</h3>
+    <div class="price">13000 сум</div>
+
+    <div class="qty-controls">
+        <button onclick="changeQty(this,-1)">-</button>
+        <span>0</span>
+        <button onclick="changeQty(this,1)">+</button>
+    </div>
+
+    <div class="order-label">Buyurtma</div>
+</div>
+
+<div class="item" data-price="Hozircha yo'q." data-name="Gorilla">
+    <img src="img/drink2.jpg">
+    <h3>Gorilla</h3>
+    <div class="price">Hozircha yo'q </div>
+
+    <div class="qty-controls">
+        <button onclick="changeQty(this,-1)">-</button>
+        <span>0</span>
+        <button onclick="changeQty(this,1)">+</button>
+    </div>
+
+    <div class="order-label">Buyurtma</div>
+</div>
+
+<div class="item" data-price="Hozircha yo'q" data-name="Red Bull">
+    <img src="img/drink3.jpg">
+    <h3>Red Bull</h3>
+    <div class="price">Hozircha yo'q </div>
+
+    <div class="qty-controls">
+        <button onclick="changeQty(this,-1)">-</button>
+        <span>0</span>
+        <button onclick="changeQty(this,1)">+</button>
+    </div>
+
+    <div class="order-label">Buyurtma</div>
+</div>
+
+<div class="item" data-price="13000" data-name="Мохито">
+    <img src="img/drink4.jpg">
+    <h3>Мохито</h3>
+    <div class="price">13000 сум</div>
+
+    <div class="qty-controls">
+        <button onclick="changeQty(this,-1)">-</button>
+        <span>0</span>
+        <button onclick="changeQty(this,1)">+</button>
+    </div>
+
+    <div class="order-label">Buyurtma</div>
+</div>
+
+<div class="item" data-price="Hozircha yo'q" data-name="Adrenalin">
+    <img src="img/drink5.jpg">
+    <h3>Adrenalin</h3>
+    <div class="price">Hozircha yo'q </div>
+
+    <div class="qty-controls">
+        <button onclick="changeQty(this,-1)">-</button>
+        <span>0</span>
+        <button onclick="changeQty(this,1)">+</button>
+    </div>
+
+    <div class="order-label">Buyurtma</div>
+</div>
+
+<div class="item" data-price="3000" data-name="Silver 0.5">
+    <img src="img/drink6.jpg">
+    <h3>Silver 0.5</h3>
+    <div class="price">3000 сум</div>
+
+    <div class="qty-controls">
+        <button onclick="changeQty(this,-1)">-</button>
+        <span>0</span>
+        <button onclick="changeQty(this,1)">+</button>
+    </div>
+
+    <div class="order-label">Buyurtma</div>
+</div>
+
+<div class="item" data-price="8000" data-name="Coca-Cola 0.5">
+    <img src="img/drink7.jpg">
+    <h3>Coca-Cola 0.5</h3>
+    <div class="price">8000 сум</div>
+
+    <div class="qty-controls">
+        <button onclick="changeQty(this,-1)">-</button>
+        <span>0</span>
+        <button onclick="changeQty(this,1)">+</button>
+    </div>
+
+    <div class="order-label">Buyurtma</div>
+</div>
+
+<div class="item" data-price="10000" data-name="Coffee Cappuccino">
+    <img src="img/drink8.jpg">
+    <h3>Coffee Cappuccino</h3>
+    <div class="price">10000 сум</div>
+
+    <div class="qty-controls">
+        <button onclick="changeQty(this,-1)">-</button>
+        <span>0</span>
+        <button onclick="changeQty(this,1)">+</button>
+    </div>
+
+    <div class="order-label">Buyurtma</div>
+</div>
+
+</div>
+</div>
+
+<!-- Кнопка и модальное окно -->
+<button class="send-tab" onclick="openModal()">📨 Telegramga adminga buyurtma yuborish</button>
+
+<div class="modal" id="orderModal">
+    <div class="modal-content">
+        <button class="close-modal" onclick="closeModal()">✖</button>
+        <h2>Buyurtmangiz — <span id="pcNumberDisplay"></span></h2>
+        <div id="orderListContainer"></div>
+        <div style="margin-top:15px; font-weight:bold; color:#00ff99;">Jami: <span id="totalSum">0</span> сум</div>
+        <button onclick="confirmOrder()">✅ Telegramga adminga buyurtma yuborish</button>
+     </div>
+</div>
+
+<script>
+function getPcNumber() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('pc') || "ПК 1";
+}
+
+let pcNumber = getPcNumber();
+document.getElementById('pcNumberDisplay').textContent = pcNumber;
+
+let order = {}; 
+// теперь будет так:
+// order["Flesh"] = { qty: 2, temp: "Sovuq" }
+
+function changeQty(btn, delta) {
+    const container = btn.parentElement;
+    const itemDiv = container.parentElement;
+    const name = itemDiv.dataset.name;
+    const price = parseInt(itemDiv.dataset.price);
+
+    if (isNaN(price)) return;
+
+    if(!order[name]) {
+        order[name] = { qty: 0, temp: "Sovuq" };
+    }
+
+    order[name].qty += delta;
+
+    if(order[name].qty < 0) order[name].qty = 0;
+
+    container.querySelector('span').textContent = order[name].qty;
+}
+
+function updateOrderList() {
+    const container = document.getElementById('orderListContainer');
+    container.innerHTML = '';
+    let sum = 0;
+
+    for(const [name, data] of Object.entries(order)) {
+
+        if(data.qty > 0){
+
+            const price = parseInt(document.querySelector(`.item[data-name='${name}']`).dataset.price);
+            sum += price * data.qty;
+
+            let div = document.createElement('div');
+
+            div.innerHTML = `
+                <div style="display:flex; flex-direction:column; width:100%;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span>${name} x${data.qty} — ${price*data.qty} сум</span>
+                        <button onclick="removeItem('${name}')" 
+                        style="background:#ff4444; color:white; border:none; border-radius:6px; padding:2px 6px; cursor:pointer;">✖</button>
+                    </div>
+
+                    <div style="margin-top:5px;">
+                        <label style="margin-right:10px;">
+                            <input type="radio" name="temp_${name}" value="Sovuq"
+                            ${data.temp === "Sovuq" ? "checked" : ""}
+                            onchange="setTemp('${name}','Sovuq')"> ❄ Sovuq
+                        </label>
+
+                        <label>
+                            <input type="radio" name="temp_${name}" value="Oddiy"
+                            ${data.temp === "Oddiy" ? "checked" : ""}
+                            onchange="setTemp('${name}','Oddiy')"> 🌡 Oddiy
+                        </label>
+                    </div>
+                </div>
+            `;
+
+            container.appendChild(div);
+        }
+    }
+
+    document.getElementById('totalSum').textContent = sum;
+}
+
+function setTemp(name, temp) {
+    if(order[name]) {
+        order[name].temp = temp;
+    }
+}
+
+function removeItem(name) {
+    order[name] = 0;
+    document.querySelector(`.item[data-name='${name}'] .qty-controls span`).textContent = 0;
+    updateOrderList();
+}
+
+function openModal() {
+    updateOrderList();
+    if(Object.values(order).every(q=>q===0)){ alert("Buyurtma bo'sh!"); return; }
+    document.getElementById('orderModal').style.display = "flex";
+}
+
+function closeModal() { document.getElementById('orderModal').style.display = "none"; }
+
+function confirmOrder() {
+
+    if(Object.values(order).every(item => !item || item.qty === 0)){
+        alert("Buyurtma bo'sh!");
+        return;
+    }
+
+    let text = "Заказ с " + pcNumber + ":\n\n";
+    let total = 0;
+
+    for(const [name, data] of Object.entries(order)){
+
+        if(data.qty > 0){
+
+            const price = parseInt(document.querySelector(`.item[data-name='${name}']`).dataset.price);
+
+            text += `${name} x${data.qty} (${data.temp}) — ${price*data.qty} сум\n`;
+
+            total += price * data.qty;
+        }
+    }
+
+    text += `\n💰 Jami: ${total} сум`;
+
+    fetch("send_order.php", {
+        method:"POST",
+        headers:{"Content-Type":"application/x-www-form-urlencoded"},
+        body:"order="+encodeURIComponent(text)
+    }).then(()=>alert("Buyurtma Telegramda adminga yuborildi!"));
+
+    for(const key in order) {
+        order[key] = { qty: 0, temp: "Sovuq" };
+    }
+
+    document.querySelectorAll('.qty-controls span').forEach(span=>span.textContent=0);
+
+    updateOrderList();
+    closeModal();
+}
+
+function cancelOrder() {
+    if(confirm("Вы уверены, что хотите очистить заказ-Buyurtmani oʻchirib tashlamoqchimisiz??")) {
+        for(const key in order) order[key]=0;
+        document.querySelectorAll('.qty-controls span').forEach(span=>span.textContent=0);
+        updateOrderList();
+        closeModal();
+    }
+}
+
+function disableKeys(e) {
+    if(e.ctrlKey){
+        let forbidden = ['c','x','u','a','s','p'];
+        if(forbidden.includes(e.key.toLowerCase())){
+            e.preventDefault();
+            return false;
+        }
+    }
+}
+
+// Блокировка отсутствующих товаров только для элементов с data-price
+document.querySelectorAll('.item').forEach(item => {
+    if (!item.hasAttribute('data-price')) return; // пропускаем тарифы
+
+    const price = parseInt(item.dataset.price);
+    if (isNaN(price)) {
+        item.classList.add('disabled');
+
+        // Отключаем кнопки
+        item.querySelectorAll('button').forEach(btn => {
+            btn.disabled = true;
+        });
+    }
+});
+</script>
+</body>
+</html>

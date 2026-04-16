@@ -1,0 +1,237 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KIBERLOGA CLUB</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    color: white;
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+/* ФОН */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background-image: url("https://images.unsplash.com/photo-1542751371-adc38448a05e");
+    background-size: cover;
+    background-position: center;
+
+    z-index: -2;
+}
+
+/* ТЁМНЫЙ СЛОЙ */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0,0,0,0.65);
+    z-index: -1;
+}
+/* ВИДЕО ФОН */
+.video-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+}
+
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: -1;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+
+    background-image: url("https://images.unsplash.com/photo-1542751371-adc38448a05e");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* ШАПКА */
+.header {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.header h1 {
+    font-size: 42px;
+    color: #ff0055;
+    text-shadow: 0 0 20px #ff0055;
+}
+
+/* КОНТЕЙНЕР */
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* КАРТОЧКИ */
+.card {
+    background: rgba(20,20,20,0.85);
+    border: 1px solid rgba(255,0,100,0.3);
+    border-radius: 20px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    transition: 0.3s;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* ФОТО */
+.card img {
+    width: 100%;
+    border-radius: 15px;
+}
+
+/* КНОПКИ */
+.button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 12px 20px;
+    background: linear-gradient(45deg, #ff0055, #ff7a00);
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+}
+
+/* TELEGRAM FIX BUTTON */
+.telegram {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #0088cc;
+    padding: 15px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 0 15px #0088cc;
+}
+
+/* КАРТА */
+.map {
+    width: 100%;
+    height: 300px;
+    border: none;
+    border-radius: 15px;
+}
+
+input[type="checkbox"] {
+    transform: scale(1.3);
+    margin-right: 8px;
+    accent-color: #ff0055;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ВИДЕО -->
+<video class="video-bg" autoplay muted loop>
+    <source src="https://cdn.coverr.co/videos/coverr-gaming-setup-5176/1080p.mp4" type="video/mp4">
+</video>
+<div class="overlay"></div>
+
+<!-- ШАПКА -->
+<div class="header">
+    <h1>⚡ KIBERLOGA CLUB ⚡</h1>
+    <p>Играй как профи</p>
+</div>
+
+<!-- КАРТОЧКИ -->
+<div class="container">
+
+    <div class="card">
+        <h2>📍 Мы на карте</h2>
+
+        <iframe class="map"
+        src="https://maps.google.com/maps?q=40.540180248741486, 68.41175556621818&output=embed">
+        </iframe>
+
+        <a class="button" href="https://www.google.com/maps/dir/?api=1&destination=40.54019115680851, 68.41175157909058">
+    Открыть маршрут
+</a>
+    </div>
+
+    <div class="card">
+        <h2>📦 Меню</h2>
+        <p>Посмотри еду и напитки клуба</p>
+        <a class="button" href="menu.html">Открыть меню</a>
+    </div>
+
+   <div class="card">
+    <h2>📞 Контакты администратора</h2>
+
+    <p>Телефон:</p>
+    <a class="button" href="tel:+998916241645">
+        📲 Позвонить
+    </a>
+
+    <p style="margin-top:10px;">Telegram:</p>
+    <a class="button" href="https://t.me/RAFAsharadatel">
+        💬 Написать в Telegram
+    </a>
+</div>
+   <div class="card">
+    <h2>⚙️ Наш телеграм бот</h2>
+
+    <label style="display:block; margin:10px 0; cursor:pointer;">
+        <input type="checkbox"> Заказ ПК на ночь
+    </label>
+
+    <label style="display:block; margin:10px 0; cursor:pointer;">
+        <input type="checkbox"> Пополнить карту аккаунта
+    </label>
+
+    <label style="display:block; margin:10px 0; cursor:pointer;">
+        <input type="checkbox"> Проверить статус занетость ПК или PS
+    </label>
+
+    <a class="button" href="https://t.me/kiberloga_club_bot" style="margin-top:15px; display:inline-block;">
+        🤖 Открыть Telegram бот
+    </a>
+</div>
+</div>
+
+</body>
+</html>
+
