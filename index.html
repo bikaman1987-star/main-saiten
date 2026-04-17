@@ -15,67 +15,56 @@
 }
 
 body {
-    font-family: 'Orbitron', Arial, sans-serif;
-    color: white;
-    overflow-x: hidden;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    background: #0b0b0c;
 }
 
-/* ФОН (оставляем видео, но делаем красиво) */
-.video-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -2;
-}
-
-.overlay {
+/* ФОН (чистый градиент) */
+body::before {
+    content: "";
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.75);
+    background:
+        radial-gradient(circle at 20% 10%, rgba(255,50,100,0.15), transparent 40%),
+        radial-gradient(circle at 80% 90%, rgba(0,150,255,0.15), transparent 40%);
     z-index: -1;
 }
 
 /* ШАПКА */
 .header {
     text-align: center;
-    padding: 60px 15px 30px;
+    padding: 50px 20px 20px;
 }
 
 .header h1 {
-    font-size: 34px;
-    color: #ff2e6e;
-    text-shadow: 0 0 20px rgba(255, 46, 110, 0.6);
+    font-size: 28px;
+    font-weight: 600;
 }
 
 .header p {
-    opacity: 0.7;
-    margin-top: 8px;
+    opacity: 0.6;
+    margin-top: 5px;
 }
 
 /* СЕТКА */
 .container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 18px;
+    gap: 16px;
     padding: 15px;
-    max-width: 1100px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
-/* КАРТОЧКИ (ГЛАВНЫЙ УЛУЧШЕННЫЙ ДИЗАЙН) */
+/* КАРТОЧКИ */
 .card {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 18px;
+    background: #141416;
+    border-radius: 16px;
     padding: 18px;
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid #1f1f22;
 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    transition: 0.25s ease;
+    transition: 0.2s;
 
     display: flex;
     flex-direction: column;
@@ -83,102 +72,63 @@ body {
 }
 
 .card:hover {
-    transform: translateY(-6px);
-    border-color: rgba(255, 46, 110, 0.5);
-    box-shadow: 0 15px 40px rgba(255, 46, 110, 0.15);
+    transform: translateY(-3px);
+    border-color: #2a2a2f;
 }
 
 /* ЗАГОЛОВКИ */
 .card h2 {
-    font-size: 18px;
-    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 /* ТЕКСТ */
 .card p {
     font-size: 14px;
-    opacity: 0.8;
+    color: #aaa;
 }
 
 /* КНОПКИ */
 .button {
-    display: inline-block;
+    margin-top: 10px;
     padding: 12px;
-    border-radius: 12px;
+    border-radius: 10px;
+    background: #ff3c5f;
     text-align: center;
-    text-decoration: none;
     color: white;
-
-    background: linear-gradient(135deg, #ff2e6e, #ff7a18);
-    box-shadow: 0 8px 20px rgba(255, 46, 110, 0.25);
-
-    transition: 0.2s;
+    text-decoration: none;
+    font-size: 14px;
 }
 
 .button:hover {
-    transform: scale(1.03);
+    background: #ff5675;
 }
 
 /* КАРТА */
 .map {
     width: 100%;
-    height: 220px;
+    height: 200px;
+    border-radius: 10px;
     border: none;
-    border-radius: 14px;
 }
 
-/* TELEGRAM BUTTON */
-.telegram {
-    position: fixed;
-    bottom: 18px;
-    right: 18px;
-    background: #0088cc;
-    padding: 14px 18px;
-    border-radius: 50px;
-    font-weight: bold;
-    text-decoration: none;
-    color: white;
-    box-shadow: 0 10px 25px rgba(0,136,204,0.4);
+/* НОВОСТИ */
+.news-item {
+    padding: 10px;
+    background: #1a1a1d;
+    border-radius: 10px;
+    font-size: 13px;
 }
 
 /* МОБИЛКА */
 @media (max-width: 768px) {
-    .header h1 {
-        font-size: 26px;
-    }
-
     .container {
         grid-template-columns: 1fr;
-        padding: 10px;
-    }
-
-    .card {
-        padding: 15px;
     }
 
     .button {
         width: 100%;
     }
-}
-
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-
-    background-image: url("https://images.unsplash.com/photo-1542751371-adc38448a05e");
-    background-size: cover;
-    background-position: center;
-
-    z-index: -2;
-}
-
-body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.65);
-    z-index: -1;
 }
 </style>
 </head>
@@ -186,10 +136,10 @@ body::after {
 <body>
 
 <!-- ВИДЕО -->
-<video class="video-bg" autoplay muted loop>
+
     <source src="https://cdn.coverr.co/videos/coverr-gaming-setup-5176/1080p.mp4" type="video/mp4">
 </video>
-<div class="overlay"></div>
+
 
 <!-- ШАПКА -->
 <div class="header">
@@ -231,7 +181,8 @@ body::after {
         💬 Написать в Telegram
     </a>
 </div>
-   <div class="card">
+
+<div class="card">
     <h2>⚙️ Наш телеграм бот</h2>
 
     <label style="display:block; margin:10px 0; cursor:pointer;">
@@ -250,8 +201,30 @@ body::after {
         🤖 Открыть Telegram бот
     </a>
 </div>
+
+<!-- НОВОСТИ -->
+<div class="card">
+    <h2>📰 Новости клуба</h2>
+
+    <div class="news-item">
+        <strong>17.04.2026</strong>
+        <p>🎮 На PlayStation3 Обновили Футбол PESS 13 transfer 2025-2026</p>
+    </div>
+
+    <div class="news-item">
+        <strong>17.04.2026</strong>
+        <p>Мы обновили карты на игре LEFT fo Dead 2</p>
+    </div>
+
+    <div class="news-item">
+        <strong></strong>
+        <p></p>
+    </div>
+</div>
+
 </div>
 
 </body>
 </html>
+
 
