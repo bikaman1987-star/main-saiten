@@ -15,56 +15,67 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    color: #fff;
-    background: #0b0b0c;
+    font-family: 'Orbitron', Arial, sans-serif;
+    color: white;
+    overflow-x: hidden;
 }
 
-/* ФОН (чистый градиент) */
-body::before {
-    content: "";
+/* ФОН (оставляем видео, но делаем красиво) */
+.video-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+}
+
+.overlay {
     position: fixed;
     inset: 0;
-    background:
-        radial-gradient(circle at 20% 10%, rgba(255,50,100,0.15), transparent 40%),
-        radial-gradient(circle at 80% 90%, rgba(0,150,255,0.15), transparent 40%);
+    background: rgba(0,0,0,0.75);
     z-index: -1;
 }
 
 /* ШАПКА */
 .header {
     text-align: center;
-    padding: 50px 20px 20px;
+    padding: 60px 15px 30px;
 }
 
 .header h1 {
-    font-size: 28px;
-    font-weight: 600;
+    font-size: 34px;
+    color: #ff2e6e;
+    text-shadow: 0 0 20px rgba(255, 46, 110, 0.6);
 }
 
 .header p {
-    opacity: 0.6;
-    margin-top: 5px;
+    opacity: 0.7;
+    margin-top: 8px;
 }
 
 /* СЕТКА */
 .container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 16px;
+    gap: 18px;
     padding: 15px;
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 0 auto;
 }
 
-/* КАРТОЧКИ */
+/* КАРТОЧКИ (ГЛАВНЫЙ УЛУЧШЕННЫЙ ДИЗАЙН) */
 .card {
-    background: #141416;
-    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
     padding: 18px;
-    border: 1px solid #1f1f22;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
 
-    transition: 0.2s;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    transition: 0.25s ease;
 
     display: flex;
     flex-direction: column;
@@ -72,14 +83,15 @@ body::before {
 }
 
 .card:hover {
-    transform: translateY(-3px);
-    border-color: #2a2a2f;
+    transform: translateY(-6px);
+    border-color: rgba(255, 46, 110, 0.5);
+    box-shadow: 0 15px 40px rgba(255, 46, 110, 0.15);
 }
 
 /* ЗАГОЛОВКИ */
 .card h2 {
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 18px;
+    color: #ffffff;
 }
 
 /* ТЕКСТ */
@@ -90,45 +102,231 @@ body::before {
 
 /* КНОПКИ */
 .button {
-    margin-top: 10px;
+    display: inline-block;
     padding: 12px;
-    border-radius: 10px;
-    background: #ff3c5f;
+    border-radius: 12px;
     text-align: center;
-    color: white;
     text-decoration: none;
-    font-size: 14px;
+    color: white;
+
+    background: linear-gradient(135deg, #ff2e6e, #ff7a18);
+    box-shadow: 0 8px 20px rgba(255, 46, 110, 0.25);
+
+    transition: 0.2s;
 }
 
 .button:hover {
-    background: #ff5675;
+    transform: scale(1.03);
 }
 
 /* КАРТА */
 .map {
     width: 100%;
-    height: 200px;
-    border-radius: 10px;
+    height: 220px;
     border: none;
+    border-radius: 14px;
 }
 
-/* НОВОСТИ */
-.news-item {
-    padding: 10px;
-    background: #1a1a1d;
-    border-radius: 10px;
-    font-size: 13px;
+/* TELEGRAM BUTTON */
+.telegram {
+    position: fixed;
+    bottom: 18px;
+    right: 18px;
+    background: #0088cc;
+    padding: 14px 18px;
+    border-radius: 50px;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+    box-shadow: 0 10px 25px rgba(0,136,204,0.4);
 }
 
 /* МОБИЛКА */
 @media (max-width: 768px) {
+    .header h1 {
+        font-size: 26px;
+    }
+
     .container {
         grid-template-columns: 1fr;
+        padding: 10px;
+    }
+
+    .card {
+        padding: 15px;
     }
 
     .button {
         width: 100%;
     }
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+
+    background-image: url("https://images.unsplash.com/photo-1542751371-adc38448a05e");
+    background-size: cover;
+    background-position: center;
+
+    z-index: -2;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: -1;
+}
+
+.news-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+    padding: 18px;
+    color: white;
+
+    background: linear-gradient(135deg, #ff2e6e, #ff7a18);
+
+    box-shadow: 0 10px 30px rgba(255, 50, 100, 0.3);
+}
+
+/* фон эффект */
+.news-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(circle at top, rgba(255,255,255,0.2), transparent 40%),
+        radial-gradient(circle at bottom, rgba(0,0,0,0.3), transparent 40%);
+
+    opacity: 0.6;
+}
+
+/* контент поверх */
+.news-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* новость */
+.news-item {
+    background: rgba(255,255,255,0.1);
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+    backdrop-filter: blur(6px);
+    transition: 0.2s;
+}
+
+.news-item:hover {
+    background: rgba(255,255,255,0.2);
+}
+/* КАРТОЧКА НОВОСТЕЙ С МОЛНИЕЙ */
+.news-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+    padding: 18px;
+    color: white;
+
+    background: linear-gradient(135deg, #0f0f10, #1a1a1d);
+}
+
+/* МОЛНИЯ */
+.news-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+        120deg,
+        transparent 40%,
+        rgba(255,255,255,0.9) 48%,
+        rgba(255,255,255,0.2) 50%,
+        transparent 60%
+    );
+
+    opacity: 0;
+    animation: lightning 4s infinite;
+}
+
+/* ВСПЫШКА */
+.news-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.15);
+    opacity: 0;
+    animation: flash 4s infinite;
+}
+
+/* АНИМАЦИЯ МОЛНИИ */
+@keyframes lightning {
+    0%, 90%, 100% { opacity: 0; }
+    92% { opacity: 1; transform: translateX(-100%); }
+    94% { opacity: 0; }
+    96% { opacity: 1; transform: translateX(100%); }
+    98% { opacity: 0; }
+}
+
+/* ВСПЫШКА */
+@keyframes flash {
+    0%, 91%, 100% { opacity: 0; }
+    93% { opacity: 0.4; }
+    97% { opacity: 0.2; }
+}
+
+/* КОНТЕНТ СВЕРХУ */
+.news-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* СТИЛЬ НОВОСТЕЙ */
+.news-item {
+    background: rgba(255,255,255,0.05);
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+/* заголовок блока */
+.news-card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    opacity: 0.9;
+}
+
+/* каждая новость */
+.news-item {
+    padding: 12px;
+    border-radius: 12px;
+    margin-top: 10px;
+
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(6px);
+
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* заголовок новости */
+.news-item strong {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+/* описание */
+.news-item p {
+    font-size: 13px;
+    color: #bbb;
+    line-height: 1.4;
 }
 </style>
 </head>
@@ -136,10 +334,10 @@ body::before {
 <body>
 
 <!-- ВИДЕО -->
-
+<video class="video-bg" autoplay muted loop>
     <source src="https://cdn.coverr.co/videos/coverr-gaming-setup-5176/1080p.mp4" type="video/mp4">
 </video>
-
+<div class="overlay"></div>
 
 <!-- ШАПКА -->
 <div class="header">
@@ -151,7 +349,7 @@ body::before {
 <div class="container">
 
     <div class="card">
-        <h2>📍 Мы на карте</h2>
+        <h2>📍 Наша локация</h2>
 
         <iframe class="map"
         src="https://maps.google.com/maps?q=40.540180248741486, 68.41175556621818&output=embed">
@@ -163,7 +361,7 @@ body::before {
     </div>
 
     <div class="card">
-        <h2>📦 Меню</h2>
+        <h2>📦 Наше Меню</h2>
         <p>Посмотри еду и напитки клуба</p>
         <a class="button" href="menu.html">Открыть меню</a>
     </div>
@@ -181,8 +379,7 @@ body::before {
         💬 Написать в Telegram
     </a>
 </div>
-
-<div class="card">
+   <div class="card">
     <h2>⚙️ Наш телеграм бот</h2>
 
     <label style="display:block; margin:10px 0; cursor:pointer;">
@@ -194,7 +391,7 @@ body::before {
     </label>
 
     <label style="display:block; margin:10px 0; cursor:pointer;">
-        <input type="checkbox"> Проверить статус занетость ПК или PS
+        <input type="checkbox"> Проверить статус занятости ПК или PS
     </label>
 
     <a class="button" href="https://t.me/kiberloga_club_bot" style="margin-top:15px; display:inline-block;">
@@ -202,29 +399,23 @@ body::before {
     </a>
 </div>
 
-<!-- НОВОСТИ -->
-<div class="card">
-    <h2>📰 Новости клуба</h2>
+<div class="card news-card">
+    <div class="news-content">
 
-    <div class="news-item">
-        <strong>17.04.2026</strong>
-        <p>🎮 На PlayStation3 Обновили Футбол PESS 13 transfer 2025-2026</p>
-    </div>
+        <h2>🔥 Новости клуба 🔥</h2>
 
-    <div class="news-item">
-        <strong>17.04.2026</strong>
-        <p>Мы обновили карты на игре LEFT fo Dead 2</p>
-    </div>
-
-    <div class="news-item">
-        <strong></strong>
-        <p></p>
-    </div>
+        <div class="news-item">
+    <strong>17.04.2026</strong>
+    <p>🎮 На PlayStation3 Обновили Футбол PESS 13 transfer 2025-2026</p>
 </div>
 
+<div class="news-item">
+    <strong>17.04.2026</strong>
+    <p>Мы обновили карты на игре LEFT fo Dead 2</p>
 </div>
 
+    </div>
+</div>
 </body>
 </html>
-
 
